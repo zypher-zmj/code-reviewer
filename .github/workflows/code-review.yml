@@ -27,7 +27,10 @@ jobs:
       # 4. 读取密钥 + 执行我们写好的 ai-review.js 评审脚本
       - name: 执行AI代码评审
         env: # 把密钥传给脚本
-          DEEPSEEK_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          MODEL_TYPE: doubao
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          DOUBAO_ENDPOINT: https://ark.cn-beijing.volces.com/api/v3/chat/completions
+          DOUBAO_MODEL: doubao-seed-evolving
         run: node src/index.js
 
       # 5. 自动在PR页面留言提醒
