@@ -1,0 +1,35 @@
+# 流水线名字
+name: AI Code Review
+
+# 触发条件：什么时候自动运行
+on:
+  push:       # 往仓库推送代码就触发
+    branches: [ main, master, dev ] # 指定哪些分支才触发
+  pull_request: # 提交PR合并代码时触发
+    branches: [ main, master, dev ]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest # 跑在GitHub云端Linux服务器上
+    steps:
+      # 1. 把你的项目代码拉取到云端服务器
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      # 2. 安装Node.js环境
+      - name: 配置Node环境
+        uses: actions/setup-node@v4
+
+      # 3. 安装项目依赖 axios dotenv
+      - name: 安装依赖
+        run: npm install axios dotenv
+
+      # 4. 读取密钥 + 执行我们写好的 ai-review.js 评审脚本
+      - name: 执行AI代码评审
+        env: # 把密钥传给脚本
+          DEEPSEEK_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+        run: node src/index.js
+
+      # 5. 自动在PR页面留言提醒
+      - name: PR自动留言
+        if: github.event_name == 'pull_request'

@@ -90,7 +90,7 @@ async function callAiReview(diffContent) {
         'Authorization': `Bearer ${apiConfig.key}`,
         'Content-Type': 'application/json'
       },
-      timeout: 30000
+      timeout: 180000
     });
 
     const result = res.data.choices[0].message.content;
