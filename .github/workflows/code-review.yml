@@ -24,7 +24,7 @@ jobs:
       - name: 安装依赖
         run: npm install axios dotenv
 
-      # 4. 读取密钥 + 执行我们写好的 ai-review.js 评审脚本
+      # 4. 读取密钥 + 执行我们写好的 index.js 评审脚本
       - name: 执行AI代码评审
         env: # 把密钥传给脚本
           MODEL_TYPE: doubao

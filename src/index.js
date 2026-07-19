@@ -16,9 +16,12 @@ const IGNORE_FILES = [
 // 获取git diff 变更代码
 function getGitDiff() {
   try {
-    const diff = execSync('git diff', { encoding: 'utf-8' });
-    return diff;
-  } catch (e) {
+    // GitHub Action 专用获取PR/push变更
+    if (process.env.GITHUB_EVENT_NAME === 'pull_request') {
+      return execSync('git diff origin/${{ github.base_ref }} HEAD', { encoding: 'utf-8' });
+    }
+    return execSync('git diff HEAD~1 HEAD', { encoding: 'utf-8' });
+  } catch {
     return '';
   }
 }
