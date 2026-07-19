@@ -36,3 +36,4 @@ jobs:
       # 5. 自动在PR页面留言提醒
       - name: PR自动留言
         if: github.event_name == 'pull_request'
+        run: echo "✅ AI代码评审已完成，请查看评审结果"
