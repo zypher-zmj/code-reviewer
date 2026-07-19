@@ -1,6 +1,6 @@
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
 const { execSync } = require('child_process');
 const axios = require('axios');
-require('dotenv').config();
 
 // 忽略不需要评审的文件
 const IGNORE_FILES = [
@@ -60,7 +60,6 @@ async function callAiReview(diffContent) {
 
   const prompt = REVIEW_PROMPT.replace('{{CODE_DIFF}}', diffContent);
   let apiConfig, postData;
-
   // 豆包
   if (process.env.MODEL_TYPE === 'doubao') {
     apiConfig = {
@@ -85,7 +84,6 @@ async function callAiReview(diffContent) {
       temperature: 0.3
     };
   }
-
   try {
     const res = await axios.post(apiConfig.url, postData, {
       headers: {
