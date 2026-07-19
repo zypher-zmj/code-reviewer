@@ -16,13 +16,18 @@ const IGNORE_FILES = [
 // 获取git diff 变更代码
 function getGitDiff() {
   try {
-    // GitHub Action 专用获取PR/push变更
-    if (process.env.GITHUB_EVENT_NAME === 'pull_request') {
-      return execSync('git diff origin/${{ github.base_ref }} HEAD', { encoding: 'utf-8' });
+    // PR环境：对比目标分支
+    if (process.env.GITHUB_BASE_REF) {
+      return execSync(`git diff origin/${process.env.GITHUB_BASE_REF} HEAD`, {encoding:'utf-8'});
     }
+    // 普通push提交对比上一版
     return execSync('git diff HEAD~1 HEAD', { encoding: 'utf-8' });
-  } catch {
-    return '';
+  } catch (e) {
+    try {
+      return execSync('git diff', { encoding: 'utf-8' });
+    } catch {
+      return '';
+    }
   }
 }
 
